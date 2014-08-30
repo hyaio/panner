@@ -300,6 +300,17 @@ define(['require'], function(require) {
 
         var position = new PositionSample(args.canvas, args.audioContext, args.audioSources[0], args.audioDestinations[0], this.pluginState);
 
+        var destructor = function () {
+
+            args.audioSources[0].disconnect();
+            position.panner.disconnect();
+
+            position.panner = null;
+
+        }.bind(this);
+
+        args.hostInterface.setDestructor (destructor);
+
         var saveState = function () {
             return { data: this.pluginState };
         };
